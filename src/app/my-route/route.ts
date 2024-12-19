@@ -6,9 +6,22 @@ export const GET = async () => {
     config: configPromise,
   })
 
-  const data = await payload.find({
+  const users = await payload.find({
     collection: 'users',
-  })
-
-  return Response.json(data)
+    where: {
+      and: [
+        {
+          email: {
+            contains: '@example.com',
+          },
+        },
+        {
+          loginAttempts: {
+            greater_than: 2,
+          },
+        },
+      ],
+    },
+  });
+  return Response.json(users)
 }
